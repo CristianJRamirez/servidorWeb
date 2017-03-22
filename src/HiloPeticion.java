@@ -27,62 +27,9 @@ public class HiloPeticion extends Thread{
     public void run() {
         InputStream is = null;
         try {
-            /*is = newSocket.getInputStream();
+            antiguo(is);
 
-            OutputStream os = newSocket.getOutputStream();
-
-            byte[] mensaje = new byte[50];
-            is.read(mensaje);
-
-
-
-            System.out.println("  -> Mensaje recibido : "+ new String (mensaje));
-
-
-
-            PrintWriter salida = new PrintWriter(new BufferedWriter(new OutputStreamWriter(newSocket.getOutputStream())), true);
-
-            salida.println("  -> El resultado es :-> "+new String (mensaje).trim());
-
-            System.out.println("  -> IP: "+newSocket.getInetAddress());
-
-            System.out.println("  -> Cerrando el socket");
-
-            newSocket.close();
-
-            System.out.println("Cerrando el socket servidor");*/
-
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(newSocket.getInputStream()));
-            salida = new PrintWriter(new OutputStreamWriter(newSocket.getOutputStream(), "8859_1"), true);
-
-            String cadena = "";        // cadena donde almacenamos las lineas que leemos
-            int i = 0;                // lo usaremos para que cierto codigo solo se ejecute una vez
-
-            do {
-                cadena = in.readLine();
-
-                if (cadena != null) {
-                    // sleep(500);
-                    System.out.println(" --" + cadena + "- ");
-                }
-
-
-                if (i == 0) // la primera linea nos dice que fichero hay que descargar
-                {
-                    i++;
-
-                    StringTokenizer st = new StringTokenizer(cadena);
-
-                    if ((st.countTokens() >= 2) && st.nextToken().equals("GET")) {
-                        retornaFichero(st.nextToken());
-                    } else {
-                        salida.println("400 Petición Incorrecta");
-                    }
-                }
-
-            }
-            while (cadena != null && cadena.length() != 0);
+            //nuevo();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -162,7 +109,62 @@ public class HiloPeticion extends Thread{
 
     }
 
+    void antiguo(InputStream is) throws IOException {
+        is = newSocket.getInputStream();
+
+        OutputStream os = newSocket.getOutputStream();
+
+        byte[] mensaje = new byte[50];
+        is.read(mensaje);
 
 
+        System.out.println("  -> Mensaje recibido : "+ new String (mensaje));
 
+        PrintWriter salida = new PrintWriter(new BufferedWriter(new OutputStreamWriter(newSocket.getOutputStream())), true);
+
+        salida.println("  -> El resultado es :-> "+new String (mensaje).trim());
+        salida.println("  -> IP: "+newSocket.getInetAddress());
+
+        System.out.println("  -> IP: "+newSocket.getInetAddress());
+
+        System.out.println("  -> Cerrando el socket");
+
+        newSocket.close();
+
+        System.out.println("Cerrando el socket servidor");
+    }
+
+    void nuevo() throws IOException {
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(newSocket.getInputStream()));
+        salida = new PrintWriter(new OutputStreamWriter(newSocket.getOutputStream(), "8859_1"), true);
+
+        String cadena = "";        // cadena donde almacenamos las lineas que leemos
+        int i = 0;                // lo usaremos para que cierto codigo solo se ejecute una vez
+
+        do {
+            cadena = in.readLine();
+
+            if (cadena != null) {
+                // sleep(500);
+                System.out.println(" --" + cadena + "- ");
+            }
+
+
+            if (i == 0) // la primera linea nos dice que fichero hay que descargar
+            {
+                i++;
+
+                StringTokenizer st = new StringTokenizer(cadena);
+
+                if ((st.countTokens() >= 2) && st.nextToken().equals("GET")) {
+                    retornaFichero(st.nextToken());
+                } else {
+                    salida.println("400 Petición Incorrecta");
+                }
+            }
+
+        }
+        while (cadena != null && cadena.length() != 0);
+    }
 }
